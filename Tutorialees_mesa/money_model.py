@@ -1,10 +1,10 @@
 # Python 3.11.0
 # Tutorial de introduccion a Mesa (Modelo de dinero)
 
-import mesa
+from mesa import Agent
 
 
-class MoneyAgent(mesa.Agent):
+class MoneyAgent(Agent):
     """An agent with fixed initial wealth."""
 
     def __init__(self, unique_id, model):
@@ -17,7 +17,7 @@ class MoneyAgent(mesa.Agent):
         print("Hi, I am agent " + str(self.unique_id) + ".")
 
 
-class MoneyModel(mesa.Model):
+class MoneyModel(Model):
     """A model with some number of agents."""
 
     def __init__(self, N):
