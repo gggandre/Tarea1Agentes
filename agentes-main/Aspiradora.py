@@ -1,6 +1,3 @@
-# M1. Actividad
-# Erika García A01745158
-# David Damián A01752785
 
 import mesa
 
