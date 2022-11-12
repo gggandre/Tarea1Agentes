@@ -4,6 +4,7 @@ from agent import MugreAgent, Roomba
 from mesa import time
 from mesa import space
 from mesa import DataCollector
+import mesa
 
 def compute_clean_cells(model):
     
@@ -18,13 +19,16 @@ def compute_clean_cells(model):
     return clean_ratio
    
 
-
 def compute_agent_moves(model):
     movements = 0
     for agent in model.schedule.agents:
         if isinstance(agent, Roomba):
             movements += agent.moves
     return movements
+
+
+def tiempo(model):
+    return model.schedule.time
 
 
 class RoombaModel(Model):
@@ -62,9 +66,9 @@ class RoombaModel(Model):
             self.grid.place_agent(agent, (1, 1))
 
         self.datacollector = DataCollector(
-            model_reporters={"CleanCells": compute_clean_cells,
-                             "TotalMovements": compute_agent_moves}
-        )
+            model_reporters={"% Celdas Limpias": compute_clean_cells,
+                             "Movimientos": compute_agent_moves,
+                             "Tiempo": tiempo})
 
     def step(self):
         if self.remaining_steps > 0 and compute_clean_cells(self) != 100.0:

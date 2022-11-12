@@ -1,5 +1,5 @@
 import mesa
-
+from mesa.visualization.modules import ChartModule
 from model import RoombaModel
 from agent import MugreAgent
 
@@ -28,6 +28,27 @@ if __name__ == '__main__':
     height: int = int(input("Alto: "))
     grid = mesa.visualization.CanvasGrid(
         agent_portrayal, width, height, 500, 500)
+    compute_agent_moves = ChartModule(
+        [{
+            "Label": "Movimientos",
+            "Color": "Black"
+        }],
+        data_collector_name='datacollector'
+            )
+    compute_clean_cells = ChartModule(
+        [{
+            "Label": "% Celdas Limpias",
+            "Color": "Blue"
+        }],
+        data_collector_name='datacollector'
+            )
+    tiempo = ChartModule(
+        [{
+            "Label": "Tiempo",
+            "Color": "Green"
+        }],
+        data_collector_name='datacollector'
+            )
     model_params = {
         "num_agents": mesa.visualization.Slider(
             "Numero de agentes",
@@ -57,7 +78,7 @@ if __name__ == '__main__':
         "height": height,
     }
     server = mesa.visualization.ModularServer(
-        RoombaModel, [grid], "RoombaModel", model_params
-    )
+        RoombaModel, [grid, tiempo, compute_clean_cells, compute_agent_moves],
+        "RoombaModel", model_params)
     server.port = 8521
     server.launch()
