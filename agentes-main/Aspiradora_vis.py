@@ -1,36 +1,38 @@
 import mesa
 
-from model import RoombaModel
-from agent import MugreAgent
+from Aspiradora import AspiradoraModel, DirtynessAgent, AspiradoraAgent
 
 
 def agent_portrayal(agent):
-    mugre = {"Shape": "circle", "Filled": "true", "r": 0.7}
-    roomba = {"Shape": "rect", "Filled": "true", "w": 1, "h": 1}
+    portrayal = {"Shape": "circle", "Filled": "true", "r": 0.5}
 
-    if type(agent) is MugreAgent:
+    if type(agent) is DirtynessAgent:
         if not agent.is_clean():
-            mugre["Color"] = "red"
-            mugre["Layer"] = 5
-            
+            portrayal["Color"] = "grey"
+            portrayal["Layer"] = 0
         else:
-            mugre["Color"] = "green"
-            mugre["Layer"] = 5
-    
+            portrayal["Color"] = "blue"
+            portrayal["Layer"] = 0
     else:
-        roomba["Color"] = "brown"
-        roomba["Layer"] = 10
-    return mugre if type(agent) is MugreAgent else roomba
+        portrayal["Color"] = "pink"
+        portrayal["Layer"] = 2
+        portrayal["r"] = 0.3
+    return portrayal
+
+
+# chart = mesa.visualization.ChartModule(
+#     [{"Label": "Gini", "Color": "#0000FF"}], data_collector_name="datacollector"
+# )
 
 
 if __name__ == '__main__':
-    width: int = int(input("Ancho: "))
-    height: int = int(input("Alto: "))
+    width: int = int(input("Ingresa el ancho:"))
+    height: int = int(input("Ingresa la altura:"))
     grid = mesa.visualization.CanvasGrid(
         agent_portrayal, width, height, 500, 500)
     model_params = {
         "num_agents": mesa.visualization.Slider(
-            "Numero de agentes",
+            "Number of agents",
             1,
             1,
             50,
@@ -38,7 +40,7 @@ if __name__ == '__main__':
             description="Choose how many agents to include in the model",
         ),
         "dirty_percentage": mesa.visualization.Slider(
-            "% Mugre",
+            "Dirty Percentage",
             0.2,
             0,
             1,
@@ -46,10 +48,10 @@ if __name__ == '__main__':
             description="Choose the percentage of dirty cells",
         ),
         "max_steps": mesa.visualization.Slider(
-            "Pasos",
+            "Max Steps",
             100,
             10,
-            10000,
+            1000,
             1,
             description="Choose the maximum number of steps"
         ),
@@ -57,7 +59,7 @@ if __name__ == '__main__':
         "height": height,
     }
     server = mesa.visualization.ModularServer(
-        RoombaModel, [grid], "RoombaModel", model_params
+        AspiradoraModel, [grid], "Aspiradora Model", model_params
     )
     server.port = 8521
     server.launch()
